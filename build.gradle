@@ -77,10 +77,10 @@ task debian(dependsOn: build) << {
         into 'build/deb/opt/customer'
         rename(/customer.*.jar/, 'customer.jar')
     }
-    exec {
-        executable '/usr/bin/dpkg-deb'
-        args "-b", "build/deb", 'build/microzon-customer.deb'
-    }
+//    exec {
+//        executable '/usr/bin/dpkg-deb'
+//        args "-b", "build/deb", 'build/microzon-customer.deb'
+//    }
 }
 
 model {
@@ -103,7 +103,7 @@ bintray {
     key = "$System.env.BINTRAY_KEY"
     filesSpec {
         from 'build/microzon-customer.deb'
-        into 'deps'
+        into 'deb'
     }
     dryRun = false
     publish = true

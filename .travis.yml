@@ -2,4 +2,4 @@ language: java
 jdk:
 - oraclejdk8
 script: "./gradlew bintrayUpload"
-before_script: sudo apt-get -y update && sudo apt-get -y install devscripts build-essential
+# before_script: sudo apt-get -y update && sudo apt-get -y install devscripts build-essential
