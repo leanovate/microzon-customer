@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 buildscript {
     repositories {
         mavenCentral()
@@ -64,9 +66,27 @@ task "dist-docker"(type:Copy) {
     into distDir
 }
 
+task debian {
+    dependsOn build
+    copy {
+        from 'src/main/debian'
+        into 'build/deb/DEBIAN'
+        filter(ReplaceTokens, tokens: [version: "$version-${System.env.TRAVIS_BUILD_NUMBER}".toString()])
+    }
+    copy {
+        from jar.archivePath
+        into 'build/deb/opt/customer'
+        rename(/customer.*.jar/, 'customer.jar')
+    }
+    exec {
+        executable 'dkpg-deb'
+        args "-b", "build/deb", 'build/microzon-customer.deb'
+    }
+}
+
 model {
-    tasks.generatePomFileForMavenJavaPublication {
-        dependsOn build
+    tasks.bintrayUpload {
+        dependsOn debian
     }
 }
 
@@ -82,11 +102,14 @@ publishing {
 bintray {
     user = "$System.env.BINTRAY_USER"
     key = "$System.env.BINTRAY_KEY"
-    publications = ['mavenJava']
+    fileSpec {
+        from 'build/microzon-customer.deb'
+        into 'deps'
+    }
     dryRun = false
     publish = true
     pkg {
-        repo = 'maven'
+        repo = 'deb'
         name = 'microzon'
     }
 }
