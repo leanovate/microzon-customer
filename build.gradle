@@ -83,7 +83,7 @@ task debian(dependsOn: build) << {
     }
     exec {
         executable '/usr/bin/curl'
-        args "-X", "PUT", "-T", 'build/microzon-customer.deb', "-u${System.env.BINTRAY_USER}:${System.env.BINTRAY_KEY}", "https://api.bintray.com/content/untoldwind/deb/microzon-customer/$version//pool/main/m/microzon-customer/microzon-customer_$version-${System.env.TRAVIS_BUILD_NUMBER}_amd64.dep;deb_distribution=trusty;deb_component=main;deb_architecture=amd64"
+        args "-X", "PUT", "-T", 'build/microzon-customer.deb', "-u${System.env.BINTRAY_USER}:${System.env.BINTRAY_KEY}", "https://api.bintray.com/content/untoldwind/deb/microzon/$version//pool/main/m/microzon-customer/microzon-customer_$version-${System.env.TRAVIS_BUILD_NUMBER}_amd64.dep;deb_distribution=trusty;deb_component=main;deb_architecture=amd64"
     }
 }
 
