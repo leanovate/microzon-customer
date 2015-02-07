@@ -79,7 +79,7 @@ task debian {
         rename(/customer.*.jar/, 'customer.jar')
     }
     exec {
-        executable 'dkpg-deb'
+        executable '/usr/bin/dpkg-deb'
         args "-b", "build/deb", 'build/microzon-customer.deb'
     }
 }
