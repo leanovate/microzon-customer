@@ -4,7 +4,6 @@ Section: misc
 Priority: extra
 Architecture: all
 Depends: supervisor, oracle-java8-installer
-Installed-Size: 8
 Maintainer: Bodo Junglas <landru@untoldwind.net>
 Homepage: http://github.com/leanovate/microzon
 Description: Customer service
