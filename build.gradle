@@ -9,15 +9,10 @@ buildscript {
     }
 }
 
-plugins {
-    id "com.jfrog.bintray" version "1.0"
-}
-
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
-apply plugin: 'maven-publish'
 
 group = "de.leanovate.microzon"
 version =  '0.1.0'
@@ -78,42 +73,11 @@ task debian(dependsOn: build) << {
         rename(/customer.*.jar/, 'customer.jar')
     }
     exec {
-        executable '/usr/bin/dpkg-deb'
-        args "-b", "build/deb", 'build/microzon-customer.deb'
+        executable '/usr/bin/fakeroot'
+        args '/usr/bin/dpkg-deb', "-b", "build/deb", 'build/microzon-customer.deb'
     }
     exec {
         executable '/usr/bin/curl'
-        args "-X", "PUT", "-T", 'build/microzon-customer.deb', "-u${System.env.BINTRAY_USER}:${System.env.BINTRAY_KEY}", "https://api.bintray.com/content/untoldwind/deb/microzon/$version/pool/main/m/microzon/microzon-customer_$version-${System.env.TRAVIS_BUILD_NUMBER}_all.deb;deb_distribution=trusty;deb_component=main;deb_architecture=all"
-    }
-}
-
-model {
-    tasks.bintrayUpload {
-        dependsOn debian
-    }
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifactId "customer"
-            artifact jar.archivePath
-        }
-    }
-}
-
-bintray {
-    user = "$System.env.BINTRAY_USER"
-    key = "$System.env.BINTRAY_KEY"
-    filesSpec {
-        from 'build/microzon-customer.deb'
-        into 'pool/main/m/microzon'
-        rename "microzon-customer.deb", "microzon-customer_$version-${System.env.TRAVIS_BUILD_NUMBER}_all.deb;deb_distribution=trusty;deb_component=main;deb_architecture=all"
-    }
-    dryRun = false
-    publish = true
-    pkg {
-        repo = 'deb'
-        name = 'microzon'
+        args "-X", "PUT", "-T", 'build/microzon-customer.deb', "-u${System.env.BINTRAY_USER}:${System.env.BINTRAY_KEY}", "https://api.bintray.com/content/untoldwind/deb/microzon/$version/pool/main/m/microzon/microzon-customer_$version-${System.env.TRAVIS_BUILD_NUMBER}_all.deb;deb_distribution=trusty;deb_component=main;deb_architecture=all?publish=1"
     }
 }
