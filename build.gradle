@@ -72,6 +72,10 @@ task debian(dependsOn: build) << {
         into 'build/deb/opt/customer'
         rename(/customer.*.jar/, 'customer.jar')
     }
+    copy {
+        from 'src/main/supervisor'
+        into 'build/deb/etc/supervisor/conf.d'
+    }
     exec {
         executable '/usr/bin/fakeroot'
         args '/usr/bin/dpkg-deb', "-b", "build/deb", 'build/microzon-customer.deb'
