@@ -3,7 +3,7 @@ Version: @version@
 Section: misc
 Priority: extra
 Architecture: all
-Depends:
+Depends: supervisor
 Installed-Size: 8
 Maintainer: Bodo Junglas <landru@untoldwind.net>
 Homepage: http://github.com/leanovate/microzon
